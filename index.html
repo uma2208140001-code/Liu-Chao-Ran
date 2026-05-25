@@ -80,10 +80,10 @@
   }
   .hero-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: clamp(1.1rem, 3vw, 2rem);
+    font-size: clamp(1.8rem, 5vw, 4rem);
     font-weight: 200; color: var(--cream);
-    line-height: 2.1; margin-bottom: 1rem;
-    letter-spacing: 0.08em;
+    line-height: 1.4; margin-bottom: 1.8rem;
+    letter-spacing: 0.18em;
     opacity: 0;
     animation: slideUpEl 1s ease 3.7s forwards;
   }
@@ -191,38 +191,6 @@
   .reveal-delay-3 { transition-delay: 0.38s; }
   .reveal-delay-4 { transition-delay: 0.52s; }
 
-  #about {
-    padding: 11rem 8vw 10rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7rem;
-    align-items: center;
-    background: var(--navy);
-    position: relative; z-index: 2;
-  }
-  .about-visual { position: relative; }
-  .about-img-frame {
-    position: absolute;
-    top: -18px; left: -18px; right: 18px; bottom: 18px;
-    border: 1px solid rgba(201,169,110,0.22);
-  }
-  .about-img {
-    width: 100%; max-width: 400px;
-    display: block; position: relative; z-index: 1;
-    filter: saturate(0.88) contrast(1.06);
-  }
-  .about-stamp {
-    position: absolute;
-    bottom: -1.2rem; right: 0rem;
-    background: var(--rose);
-    padding: 0.35rem 1rem;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 0.68rem;
-    letter-spacing: 0.3em;
-    color: var(--cream);
-    z-index: 2;
-    font-weight: 200;
-  }
   .section-label {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.68rem;
@@ -238,69 +206,6 @@
     line-height: 1.2;
     margin-bottom: 1.5rem;
     letter-spacing: 0.04em;
-  }
-  .about-intro {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 0.88rem;
-    line-height: 2.3;
-    color: var(--cream-dim);
-    font-weight: 200;
-    margin-bottom: 2rem;
-  }
-  .about-tags {
-    display: flex; gap: 0.6rem; flex-wrap: wrap;
-    margin: 2rem 0 2.8rem;
-  }
-  .about-tag {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    padding: 0.38rem 0.9rem;
-    border: 1px solid rgba(201,169,110,0.32);
-    color: var(--gold);
-    cursor: default;
-    position: relative;
-    transition: all 0.3s;
-    font-weight: 200;
-  }
-  .about-tag:hover {
-    background: rgba(201,169,110,0.08);
-    border-color: var(--gold);
-  }
-  .about-tag-tip {
-    position: absolute;
-    bottom: calc(100% + 10px); left: 50%;
-    transform: translateX(-50%);
-    background: var(--navy2);
-    border: 1px solid rgba(201,169,110,0.25);
-    padding: 0.65rem 1rem;
-    font-size: 0.7rem;
-    line-height: 1.8;
-    color: var(--cream-dim);
-    white-space: nowrap;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.25s;
-    z-index: 10;
-    font-family: 'Noto Serif TC', serif;
-    font-weight: 200;
-  }
-  .about-tag:hover .about-tag-tip { opacity: 1; }
-  .about-stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.07);
-  }
-  .stat-item { text-align: center; }
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem; color: var(--gold);
-    font-weight: 300; display: block;
-  }
-  .stat-label {
-    font-size: 0.65rem; letter-spacing: 0.22em;
-    color: var(--cream-dim);
-    font-family: 'Noto Serif TC', serif; font-weight: 200;
   }
 
   #toast-section {
@@ -438,7 +343,7 @@
   .cta-bg {
     position: absolute; inset: 0;
     background-image: url('https://files.catbox.moe/dpick3.png');
-    background-size: cover; background-position: center center;
+    background-size: cover; background-position: center 30%;
     animation: heroZoom 18s ease-in-out infinite alternate;
   }
   @keyframes heroZoom {
@@ -449,9 +354,9 @@
     position: absolute; inset: 0;
     background: linear-gradient(
       to top,
-      rgba(7,7,14,0.95) 0%,
-      rgba(7,7,14,0.55) 50%,
-      rgba(7,7,14,0.3) 100%
+      rgba(7,7,14,0.92) 0%,
+      rgba(7,7,14,0.48) 45%,
+      rgba(7,7,14,0.22) 100%
     );
   }
   .cta-content {
@@ -556,9 +461,6 @@
   @media (max-width: 860px) {
     nav { padding: 1.2rem 5vw; }
     .nav-links { display: none; }
-    #about { grid-template-columns: 1fr; gap: 2.5rem; padding: 7rem 6vw 6rem; }
-    .about-visual { display: none; }
-    .about-stats { grid-template-columns: repeat(3,1fr); }
     #toast-section { flex-direction: column; gap: 3rem; padding: 6rem 6vw; }
     .toast-cat-img { width: 160px; }
     #scenes { padding: 7rem 6vw 8rem; }
@@ -577,7 +479,6 @@
 <nav id="navbar">
   <a class="nav-logo" href="#">柳朝染</a>
   <ul class="nav-links">
-    <li><a href="#about">她是誰</a></li>
     <li><a href="#toast-section">關於吐司</a></li>
     <li><a href="#scenes">開始相遇</a></li>
   </ul>
@@ -588,11 +489,7 @@
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <span class="hero-label">CHARACTER FILE · 柳朝染</span>
-    <h1 class="hero-title">
-      柳氏集團總經理，柳家繼承人。<br>
-      你的前妻。
-    </h1>
+    <h1 class="hero-title">你那後悔放手的前妻</h1>
     <p class="hero-sub">
       孤傲、深情、強勢。<br>
       唯獨對你，她所有的原則都可以退讓。
@@ -603,6 +500,7 @@
     <span class="hero-scroll-text">SCROLL</span>
   </div>
 </section>
+
 
 
 <section id="toast-section">
@@ -631,8 +529,7 @@
 
 <section id="scenes">
   <div class="scenes-header">
-    <p class="section-label reveal">THREE WAYS IN</p>
-    <h2 class="section-title reveal">選一個你喜歡的開場</h2>
+    <p class="section-label reveal">開場情境</p>
   </div>
 
   <div class="scenes-grid">

@@ -41,6 +41,84 @@
     opacity: 0.35;
   }
 
+  /* HERO */
+  #hero {
+    position: relative;
+    height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    z-index: 2;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://files.catbox.moe/z14rsi.png');
+    background-size: cover; background-position: center;
+    animation: heroZoom 18s ease-in-out infinite alternate;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(7,7,14,0.92) 0%,
+      rgba(7,7,14,0.45) 50%,
+      rgba(7,7,14,0.25) 100%
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 0 8vw;
+  }
+  .hero-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.68rem; letter-spacing: 0.8em;
+    color: var(--gold-dim);
+    margin-bottom: 1.8rem;
+    display: block;
+    opacity: 0;
+    animation: fadeInEl 1s ease 3.5s forwards;
+  }
+  .hero-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 300; color: var(--cream);
+    line-height: 1.9; margin-bottom: 1rem;
+    opacity: 0;
+    animation: slideUpEl 1s ease 3.7s forwards;
+  }
+  .hero-sub {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.85rem; color: var(--cream-dim);
+    font-weight: 200; line-height: 2;
+    opacity: 0;
+    animation: fadeInEl 1s ease 4s forwards;
+  }
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0;
+    animation: fadeInEl 1s ease 4.3s forwards;
+  }
+  .hero-scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+  .hero-scroll-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.62rem; letter-spacing: 0.5em;
+    color: var(--gold-dim);
+  }
+  @keyframes scrollLine {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+  @keyframes slideUpEl {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   #loading {
     position: fixed; inset: 0; z-index: 9999;
     background: #000;
@@ -356,8 +434,8 @@
   }
   .cta-bg {
     position: absolute; inset: 0;
-    background-image: url('https://files.catbox.moe/z14rsi.png');
-    background-size: cover; background-position: center 25%;
+    background-image: url('https://files.catbox.moe/dpick3.png');
+    background-size: cover; background-position: center 20%;
     transform: scale(1.04);
     animation: heroZoom 18s ease-in-out infinite alternate;
   }
@@ -501,6 +579,27 @@
     <li><a href="#scenes">開始相遇</a></li>
   </ul>
 </nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-label">CHARACTER FILE · 柳朝染</span>
+    <h1 class="hero-title">
+      柳氏集團總經理。柳家繼承人。<br>
+      你的前妻。
+    </h1>
+    <p class="hero-sub">
+      孤傲、深情、強勢。<br>
+      唯獨對你，她所有的原則都可以退讓。
+    </p>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span class="hero-scroll-text">SCROLL</span>
+  </div>
+</section>
 
 <section id="about">
   <div class="about-visual reveal">

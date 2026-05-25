@@ -232,11 +232,12 @@
   }
   .section-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
     font-weight: 300;
     color: var(--cream);
-    line-height: 1.1;
+    line-height: 1.2;
     margin-bottom: 1.5rem;
+    letter-spacing: 0.04em;
   }
   .about-intro {
     font-family: 'Noto Serif TC', serif;
@@ -429,15 +430,15 @@
 
   .cta-block {
     position: relative;
-    min-height: 60vh;
+    min-height: 100vh;
+    width: 100%;
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden; border-radius: 2px;
+    overflow: hidden;
   }
   .cta-bg {
     position: absolute; inset: 0;
     background-image: url('https://files.catbox.moe/dpick3.png');
-    background-size: cover; background-position: center 20%;
-    transform: scale(1.04);
+    background-size: cover; background-position: center center;
     animation: heroZoom 18s ease-in-out infinite alternate;
   }
   @keyframes heroZoom {
@@ -526,6 +527,7 @@
     font-size: 0.72rem; letter-spacing: 0.4em;
     color: rgba(201,169,110,0.45);
     font-style: italic;
+    white-space: nowrap;
   }
 
   footer {
@@ -588,7 +590,7 @@
   <div class="hero-content">
     <span class="hero-label">CHARACTER FILE · 柳朝染</span>
     <h1 class="hero-title">
-      柳氏集團總經理。柳家繼承人。<br>
+      柳氏集團總經理，柳家繼承人。<br>
       你的前妻。
     </h1>
     <p class="hero-sub">
@@ -602,52 +604,6 @@
   </div>
 </section>
 
-<section id="about">
-  <div class="about-visual reveal">
-    <div class="about-img-frame"></div>
-    <img class="about-img" src="https://files.catbox.moe/dpick3.png" alt="柳朝染">
-    <div class="about-stamp">機密 · 柳氏集團</div>
-  </div>
-  <div class="about-text">
-    <p class="section-label reveal">CHARACTER FILE</p>
-    <h2 class="section-title reveal">她是誰</h2>
-    <p class="about-intro reveal reveal-delay-1">
-      柳氏集團總經理。柳家繼承人。<br>
-      你的前妻。
-    </p>
-    <div class="about-tags reveal reveal-delay-2">
-      <div class="about-tag">孤傲
-        <div class="about-tag-tip">對除你之外的人，她從不需要解釋。</div>
-      </div>
-      <div class="about-tag">深情
-        <div class="about-tag-tip">你一直都在她心上，從未放下。</div>
-      </div>
-      <div class="about-tag">強勢
-        <div class="about-tag-tip">她向來習慣自己做決定與承擔。</div>
-      </div>
-      <div class="about-tag">溫柔
-        <div class="about-tag-tip">唯獨對你，她所有的原則都可以退讓。</div>
-      </div>
-      <div class="about-tag">飼主
-        <div class="about-tag-tip">小貓吐司的主人。也是離婚後，唯一還留在她身邊的念想。</div>
-      </div>
-    </div>
-    <div class="about-stats reveal reveal-delay-3">
-      <div class="stat-item">
-        <span class="stat-num">七年</span>
-        <span class="stat-label">相守</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">三年</span>
-        <span class="stat-label">離散</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">一次</span>
-        <span class="stat-label">重逢</span>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section id="toast-section">
   <div class="toast-cat-wrap reveal" onclick="showToastQuote()">
@@ -742,7 +698,7 @@
           <span>穆楓茗的創作主頁</span>
         </a>
       </div>
-      <p class="cta-tags">#追妻火葬場 &nbsp;·&nbsp; #破鏡重圓 &nbsp;·&nbsp; #GL &nbsp;·&nbsp; #百合</p>
+      <p class="cta-tags">#追妻火葬場 &nbsp;·&nbsp; #破鏡重圓 &nbsp;·&nbsp; #百合</p>
     </div>
   </div>
 </section>

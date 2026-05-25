@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>柳朝染</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+TC:wght@200;300;400&family=Noto+Sans+TC:wght@200;300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #07070E;
+    --navy: #0D1020;
+    --navy2: #141828;
+    --gold: #C9A96E;
+    --gold-dim: #8A6E42;
+    --rose: #8B2035;
+    --rose-light: #B84060;
+    --silver: #B8C4D0;
+    --cream: #F0ECE8;
+    --cream-dim: #A89F96;
+    --blue-accent: #2D3A5E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 200;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  #loading {
+    position: fixed; inset: 0; z-index: 9999;
+    background: #000;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    transition: opacity 1.2s ease, visibility 1.2s ease;
+  }
+  #loading.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .loading-text {
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 200;
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    color: var(--cream-dim);
+    letter-spacing: 0.5em;
+    opacity: 0;
+    animation: fadeInEl 2s ease 0.5s forwards;
+  }
+  .loading-bar {
+    width: 180px; height: 1px;
+    background: var(--navy2);
+    margin-top: 2.5rem;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeInEl 0.5s ease 0.8s forwards;
+  }
+  .loading-bar-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    animation: barFill 2.5s ease 1s forwards;
+  }
+  @keyframes barFill { to { width: 100%; } }
+  @keyframes fadeInEl { to { opacity: 1; } }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(7,7,14,0.85) 0%, transparent 100%);
+    transition: background 0.4s;
+  }
+  nav.scrolled { background: rgba(7,7,14,0.94); backdrop-filter: blur(12px); }
+  .nav-logo {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1rem;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 300;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 200;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.38s; }
+  .reveal-delay-4 { transition-delay: 0.52s; }
+
+  #about {
+    padding: 11rem 8vw 10rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7rem;
+    align-items: center;
+    background: var(--navy);
+    position: relative; z-index: 2;
+  }
+  .about-visual { position: relative; }
+  .about-img-frame {
+    position: absolute;
+    top: -18px; left: -18px; right: 18px; bottom: 18px;
+    border: 1px solid rgba(201,169,110,0.22);
+  }
+  .about-img {
+    width: 100%; max-width: 400px;
+    display: block; position: relative; z-index: 1;
+    filter: saturate(0.88) contrast(1.06);
+  }
+  .about-stamp {
+    position: absolute;
+    bottom: -1.2rem; right: 0rem;
+    background: var(--rose);
+    padding: 0.35rem 1rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: var(--cream);
+    z-index: 2;
+    font-weight: 200;
+  }
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.7em;
+    color: var(--gold-dim);
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .about-intro {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.88rem;
+    line-height: 2.3;
+    color: var(--cream-dim);
+    font-weight: 200;
+    margin-bottom: 2rem;
+  }
+  .about-tags {
+    display: flex; gap: 0.6rem; flex-wrap: wrap;
+    margin: 2rem 0 2.8rem;
+  }
+  .about-tag {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    padding: 0.38rem 0.9rem;
+    border: 1px solid rgba(201,169,110,0.32);
+    color: var(--gold);
+    cursor: default;
+    position: relative;
+    transition: all 0.3s;
+    font-weight: 200;
+  }
+  .about-tag:hover {
+    background: rgba(201,169,110,0.08);
+    border-color: var(--gold);
+  }
+  .about-tag-tip {
+    position: absolute;
+    bottom: calc(100% + 10px); left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy2);
+    border: 1px solid rgba(201,169,110,0.25);
+    padding: 0.65rem 1rem;
+    font-size: 0.7rem;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+    z-index: 10;
+    font-family: 'Noto Serif TC', serif;
+    font-weight: 200;
+  }
+  .about-tag:hover .about-tag-tip { opacity: 1; }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; color: var(--gold);
+    font-weight: 300; display: block;
+  }
+  .stat-label {
+    font-size: 0.65rem; letter-spacing: 0.22em;
+    color: var(--cream-dim);
+    font-family: 'Noto Serif TC', serif; font-weight: 200;
+  }
+
+  #toast-section {
+    padding: 9rem 8vw;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7rem;
+    position: relative; z-index: 2;
+  }
+  .toast-cat-wrap {
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+  }
+  .toast-cat-img {
+    width: 220px;
+    display: block;
+    animation: catFloat 4s ease-in-out infinite;
+    transition: transform 0.3s;
+    border-radius: 4px;
+  }
+  .toast-cat-wrap:hover .toast-cat-img { transform: scale(1.04) rotate(-3deg); }
+  @keyframes catFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .toast-bubble {
+    position: absolute;
+    top: -3.5rem; left: 50%; transform: translateX(-50%);
+    background: var(--navy2);
+    border: 1px solid rgba(201,169,110,0.28);
+    padding: 0.55rem 0.9rem;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.72rem; color: var(--cream-dim);
+    white-space: nowrap; border-radius: 2px;
+    opacity: 0; transition: opacity 0.3s;
+    pointer-events: none; font-weight: 200;
+  }
+  .toast-cat-wrap:hover .toast-bubble { opacity: 1; }
+  .toast-text { max-width: 460px; }
+  .toast-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.68rem; letter-spacing: 0.65em;
+    color: var(--rose-light); margin-bottom: 1rem;
+  }
+  .toast-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1rem, 2.2vw, 1.3rem);
+    color: var(--cream); font-weight: 300;
+    line-height: 2; margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  .toast-body {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.84rem; line-height: 2.2;
+    color: var(--cream-dim); font-weight: 200;
+  }
+  #toast-quote {
+    margin-top: 1.8rem;
+    padding: 0.9rem 1.4rem;
+    border-left: 2px solid var(--gold);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.82rem; line-height: 1.9;
+    color: var(--cream-dim);
+    background: rgba(201,169,110,0.04);
+    opacity: 0; transition: opacity 0.5s ease;
+    font-weight: 200;
+  }
+  #toast-quote.show { opacity: 1; }
+
+  #scenes {
+    padding: 9rem 8vw 10rem;
+    background: var(--navy);
+    position: relative; z-index: 2;
+  }
+  .scenes-header { margin-bottom: 4.5rem; }
+  .scenes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 7rem;
+  }
+  .scene-card {
+    background: rgba(7,7,14,0.6);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 2.8rem 2.2rem 2.5rem;
+    position: relative; overflow: hidden;
+    transition: border-color 0.4s, transform 0.4s;
+  }
+  .scene-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.5s;
+  }
+  .scene-card:hover { border-color: rgba(201,169,110,0.28); transform: translateY(-5px); }
+  .scene-card:hover::before { transform: scaleX(1); }
+  .scene-badge {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.65rem; letter-spacing: 0.5em;
+    color: var(--rose-light);
+    border: 1px solid rgba(184,64,96,0.35);
+    padding: 0.22rem 0.7rem;
+    margin-bottom: 1.6rem;
+  }
+  .scene-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1rem; color: var(--cream);
+    font-weight: 300; line-height: 1.7;
+    margin-bottom: 1.4rem;
+  }
+  .scene-body {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.78rem; line-height: 2.1;
+    color: var(--cream-dim); font-weight: 200;
+  }
+  .scene-divider {
+    width: 28px; height: 1px;
+    background: var(--gold-dim);
+    margin: 1.2rem 0;
+    opacity: 0.5;
+  }
+
+  .cta-block {
+    position: relative;
+    min-height: 60vh;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; border-radius: 2px;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://files.catbox.moe/z14rsi.png');
+    background-size: cover; background-position: center 25%;
+    transform: scale(1.04);
+    animation: heroZoom 18s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.04); }
+    to { transform: scale(1.1); }
+  }
+  .cta-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(7,7,14,0.95) 0%,
+      rgba(7,7,14,0.55) 50%,
+      rgba(7,7,14,0.3) 100%
+    );
+  }
+  .cta-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 5rem 8vw;
+  }
+  .cta-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.68rem; letter-spacing: 0.8em;
+    color: var(--gold-dim); margin-bottom: 2rem;
+    display: block;
+  }
+  .cta-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+    font-weight: 300; color: var(--cream);
+    line-height: 1.8; margin-bottom: 0.8rem;
+  }
+  .cta-sub {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.85rem; color: var(--cream-dim);
+    font-weight: 200; line-height: 2;
+    margin-bottom: 3rem;
+  }
+  .cta-buttons {
+    display: flex; gap: 1rem;
+    justify-content: center; flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .cta-btn {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.78rem; letter-spacing: 0.25em;
+    color: var(--cream);
+    border: 1px solid rgba(201,169,110,0.5);
+    padding: 0.85rem 1.8rem;
+    text-decoration: none;
+    position: relative; overflow: hidden;
+    transition: color 0.4s;
+    font-weight: 200;
+    display: inline-block;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .cta-btn:hover::before { transform: translateX(0); }
+  .cta-btn:hover { color: var(--black); }
+  .cta-btn span { position: relative; z-index: 1; }
+  .cta-btn.primary {
+    background: var(--gold); color: var(--black);
+    border-color: var(--gold);
+    font-size: 0.88rem;
+    padding: 1rem 2.8rem;
+    letter-spacing: 0.35em;
+  }
+  .cta-btn.primary::before { background: var(--cream); }
+  .cta-btn.primary:hover { color: var(--black); }
+  .cta-btn.secondary {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--cream-dim);
+    border-color: rgba(255,255,255,0.12);
+    padding: 0.65rem 1.4rem;
+  }
+  .cta-btn.secondary::before { background: rgba(255,255,255,0.06); }
+  .cta-btn.secondary:hover { color: var(--cream-dim); }
+  .cta-tags {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.72rem; letter-spacing: 0.4em;
+    color: rgba(201,169,110,0.45);
+    font-style: italic;
+  }
+
+  footer {
+    background: var(--black);
+    padding: 2.5rem 8vw;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; z-index: 2;
+  }
+  .footer-name {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.8rem; letter-spacing: 0.3em;
+    color: var(--gold-dim); font-weight: 200;
+  }
+  .footer-credit {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 0.62rem; letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.18); font-weight: 200;
+  }
+  .footer-link {
+    color: var(--gold-dim); text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-link:hover { color: var(--gold); }
+
+  @media (max-width: 860px) {
+    nav { padding: 1.2rem 5vw; }
+    .nav-links { display: none; }
+    #about { grid-template-columns: 1fr; gap: 2.5rem; padding: 7rem 6vw 6rem; }
+    .about-visual { display: none; }
+    .about-stats { grid-template-columns: repeat(3,1fr); }
+    #toast-section { flex-direction: column; gap: 3rem; padding: 6rem 6vw; }
+    .toast-cat-img { width: 160px; }
+    #scenes { padding: 7rem 6vw 8rem; }
+    .scenes-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <p class="loading-text">整整三年了。</p>
+  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+</div>
+
+<nav id="navbar">
+  <a class="nav-logo" href="#">柳朝染</a>
+  <ul class="nav-links">
+    <li><a href="#about">她是誰</a></li>
+    <li><a href="#toast-section">關於吐司</a></li>
+    <li><a href="#scenes">開始相遇</a></li>
+  </ul>
+</nav>
+
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-img-frame"></div>
+    <img class="about-img" src="https://files.catbox.moe/dpick3.png" alt="柳朝染">
+    <div class="about-stamp">機密 · 柳氏集團</div>
+  </div>
+  <div class="about-text">
+    <p class="section-label reveal">CHARACTER FILE</p>
+    <h2 class="section-title reveal">她是誰</h2>
+    <p class="about-intro reveal reveal-delay-1">
+      柳氏集團總經理。柳家繼承人。<br>
+      你的前妻。
+    </p>
+    <div class="about-tags reveal reveal-delay-2">
+      <div class="about-tag">孤傲
+        <div class="about-tag-tip">對除你之外的人，她從不需要解釋。</div>
+      </div>
+      <div class="about-tag">深情
+        <div class="about-tag-tip">你一直都在她心上，從未放下。</div>
+      </div>
+      <div class="about-tag">強勢
+        <div class="about-tag-tip">她向來習慣自己做決定與承擔。</div>
+      </div>
+      <div class="about-tag">溫柔
+        <div class="about-tag-tip">唯獨對你，她所有的原則都可以退讓。</div>
+      </div>
+      <div class="about-tag">飼主
+        <div class="about-tag-tip">小貓吐司的主人。也是離婚後，唯一還留在她身邊的念想。</div>
+      </div>
+    </div>
+    <div class="about-stats reveal reveal-delay-3">
+      <div class="stat-item">
+        <span class="stat-num">七年</span>
+        <span class="stat-label">相守</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">三年</span>
+        <span class="stat-label">離散</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">一次</span>
+        <span class="stat-label">重逢</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="toast-section">
+  <div class="toast-cat-wrap reveal" onclick="showToastQuote()">
+    <img class="toast-cat-img" src="https://files.catbox.moe/mvszlq.png" alt="吐司">
+    <div class="toast-bubble">點我</div>
+  </div>
+  <div class="toast-text reveal reveal-delay-2">
+    <p class="toast-label">ABOUT TOAST · 關於吐司</p>
+    <p class="toast-title">
+      「我目前唯一的室友，<br>
+      是一隻叫『吐司』的暹羅貓。<br>
+      牠比大多數人都要忠誠且安靜。」
+    </p>
+    <p class="toast-body">
+      藍眼、銀白毛、四肢與臉部深色。<br>
+      黏人、貪吃，有時候假裝沒聽到主人呵斥。<br><br>
+      這隻貓，你們曾經一起養。
+    </p>
+    <div id="toast-quote">
+      「你看，連貓都比你聽話，知道這時候該保持安靜。」<br>
+      <span style="font-size:0.7rem;color:var(--gold-dim);letter-spacing:0.3em;margin-top:0.4rem;display:inline-block;">— 柳朝染</span>
+    </div>
+  </div>
+</section>
+
+<section id="scenes">
+  <div class="scenes-header">
+    <p class="section-label reveal">THREE WAYS IN</p>
+    <h2 class="section-title reveal">選一個你喜歡的開場</h2>
+  </div>
+
+  <div class="scenes-grid">
+    <div class="scene-card reveal reveal-delay-1">
+      <div class="scene-badge">預設開場</div>
+      <h3 class="scene-title">一場毫無預警的<br>傾盆大雨</h3>
+      <div class="scene-divider"></div>
+      <p class="scene-body">
+        三年後的第一次重逢。<br>
+        你狼狽地站在屋簷下，<br>
+        一輛黑色邁巴赫停在不遠處。<br><br>
+        她走下車，視線落在你身上，<br>
+        沉默了整整三秒。<br><br>
+        柳朝染沒有離開。
+      </p>
+    </div>
+
+    <div class="scene-card reveal reveal-delay-2">
+      <div class="scene-badge">輕鬆開場</div>
+      <h3 class="scene-title">你在路口<br>撿到一隻貓</h3>
+      <div class="scene-divider"></div>
+      <p class="scene-body">
+        一隻體型龐大的栗紅色緬因貓，<br>
+        獨自坐在磚牆邊，<br>
+        用一雙不像流浪貓的眼睛看著你。<br><br>
+        牠仰起頭，<br>
+        發出一聲委屈又甜膩的喵嗚。<br><br>
+        你不知道，牠在等你很久了。
+      </p>
+    </div>
+
+    <div class="scene-card reveal reveal-delay-3">
+      <div class="scene-badge">虐心開場</div>
+      <h3 class="scene-title">有時候你會感覺到<br>一陣涼意</h3>
+      <div class="scene-divider"></div>
+      <p class="scene-body">
+        像是被人輕輕摸了臉。<br><br>
+        她昏迷著，沒有人知道原因。<br>
+        但她的魂魄已經離開了莊園，<br>
+        無意識地尋找著她最思念的人。<br><br>
+        那個人，是你。
+      </p>
+    </div>
+  </div>
+
+  <div class="cta-block reveal">
+    <div class="cta-bg"></div>
+    <div class="cta-overlay"></div>
+    <div class="cta-content">
+      <span class="cta-eyebrow">✦ &nbsp; 現在重逢 &nbsp; ✦</span>
+      <h2 class="cta-title">
+        選擇一個你喜歡的開場，<br>現在重逢。
+      </h2>
+      <p class="cta-sub">
+        有些話，她不會對任何人說。<br>
+        但對你，或許不一樣。
+      </p>
+      <div class="cta-buttons">
+        <a class="cta-btn primary" href="https://loveydovey.onelink.me/vs4G/lzo6lxqc" target="_blank">
+          <span>開始相遇</span>
+        </a>
+        <a class="cta-btn secondary" href="https://loveydovey.onelink.me/vs4G/hh50cs9m" target="_blank">
+          <span>穆楓茗的創作主頁</span>
+        </a>
+      </div>
+      <p class="cta-tags">#追妻火葬場 &nbsp;·&nbsp; #破鏡重圓 &nbsp;·&nbsp; #GL &nbsp;·&nbsp; #百合</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-name">柳朝染</span>
+  <p class="footer-credit">
+    創作者 <a class="footer-link" href="https://loveydovey.onelink.me/vs4G/hh50cs9m" target="_blank">穆楓茗</a>
+  </p>
+</footer>
+
+<script>
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loading').classList.add('hidden');
+  }, 3200);
+});
+
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+function showToastQuote() {
+  document.getElementById('toast-quote').classList.add('show');
+  const img = document.querySelector('.toast-cat-img');
+  img.style.transform = 'scale(1.15) rotate(8deg)';
+  setTimeout(() => { img.style.transform = ''; }, 500);
+}
+</script>
+</body>
+</html>
